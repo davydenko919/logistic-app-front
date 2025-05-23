@@ -6,6 +6,7 @@ import LoginPage from "../../peges/LoginPage/LoginPage.jsx";
 import RegistrationPage from "../../peges/RegistrationPage/RegistrationPage.jsx";
 import TripsPage from "../../peges/TripsPage/TripsPage.jsx";
 import RefuelingPage from "../../peges/RefuelingPage/RefuelingPage.jsx";
+import AnalyticsPage from "../../peges/AnalyticsPage/AnalyticsPage.jsx";
 import ProfilePage from "../../peges/ProfilePage/ProfilePage.jsx";
 import NotFoundPage from "../../peges/NotFoundPage/NotFoundPage.jsx";
 
