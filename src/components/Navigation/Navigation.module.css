@@ -1,0 +1,148 @@
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 16px;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #1e1e1e;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.logo:hover,
+.logo.active {
+  background-color: #e6edff;
+  color: #004BBA;
+}
+
+.logo .icon {
+  color: #004BBA;
+  margin-right: 12px;
+}
+
+.navLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.navLinks li {
+  margin-bottom: 16px;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: #999;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  position: relative;
+}
+
+.navLinks a:hover {
+  background-color: #f4f4f4;
+}
+
+.navLinks a.active {
+  background-color: #e6edff;
+  color: #004BBA;
+  font-weight: 600;
+}
+
+.navLinks a.active .icon,
+.navLinks a:hover .icon {
+  color: #004BBA;
+}
+
+.navLinks a.active::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: -16px;
+  width: 4px;
+  height: calc(100% - 16px);
+  background-color: #004BBA;
+  border-radius: 4px;
+}
+
+.icon {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.footer {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 16px;
+}
+
+.logout {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.logout .icon {
+  color: #999;
+}
+
+.profileLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 12px;
+  color: #1e1e1e;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ddd;
+  flex-shrink: 0;
+}
+
+.profileText {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.email {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.2;
+}

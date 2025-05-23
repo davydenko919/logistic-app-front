@@ -1,5 +1,6 @@
-
+import css from "./App.module.css";
 import { Routes, Route, NavLink  } from "react-router-dom";
+
 
 import HomePage from "../../peges/HomePage/HomePage.jsx";
 import LoginPage from "../../peges/LoginPage/LoginPage.jsx";
@@ -9,28 +10,16 @@ import RefuelingPage from "../../peges/RefuelingPage/RefuelingPage.jsx";
 import AnalyticsPage from "../../peges/AnalyticsPage/AnalyticsPage.jsx";
 import ProfilePage from "../../peges/ProfilePage/ProfilePage.jsx";
 import NotFoundPage from "../../peges/NotFoundPage/NotFoundPage.jsx";
+import Navigation from "../Navigation/Navigation.jsx";
+
 
 export const App = () => {
   return (
     <div>
-      <nav>
-        <NavLink to="/">
-          Logistics
-        </NavLink>
-        <NavLink to="/trips">
-          Рейси
-        </NavLink>
-        <NavLink to="/refueling">
-          Пальне
-        </NavLink>
-        <NavLink to="/analytics">
-          Аналітика
-        </NavLink>
-        <NavLink to="/profile">
-          Профіль
-        </NavLink>
-      </nav>
-      
+
+      <Navigation /> 
+
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
