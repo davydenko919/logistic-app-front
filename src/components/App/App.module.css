@@ -1,1 +1,10 @@
 
+.appContainer {
+  display: flex;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 24px;
+  box-sizing: border-box;
+}

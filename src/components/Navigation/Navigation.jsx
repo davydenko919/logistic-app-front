@@ -62,30 +62,3 @@ const Navigation = () => {
 };
 
 export default Navigation;
-
-// import { NavLink } from "react-router-dom";
-// import css from "./Navigation.module.css";
-
-// const Navigation = () => {
-//   return (
-//     <nav>
-//         <NavLink to="/">
-//           Logistics
-//         </NavLink>
-//         <NavLink to="/trips">
-//           Рейси
-//         </NavLink>
-//         <NavLink to="/refueling">
-//           Пальне
-//         </NavLink>
-//         <NavLink to="/analytics">
-//           Аналітика
-//         </NavLink>
-//         <NavLink to="/profile">
-//           Профіль
-//         </NavLink>
-//       </nav>
-//   );
-// };
-
-// export default Navigation;
