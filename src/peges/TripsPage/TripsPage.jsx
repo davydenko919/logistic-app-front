@@ -3,27 +3,25 @@ import { useEffect, useState } from "react";
 import css from "./TripsPage.module.css";
 import TripCard from "../../components/TripCard/TripCard.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { getTrips } from "../../redux/trips/operations";
-import { selectLoading } from "../../redux/trips/selectors";
-import { selectAllTrips } from "../../redux/trips/selectors.js";
+import { getTrips, postTrip, deleteTrip, putTrip } from "../../redux/trips/operations";
+import { selectLoading, selectAllTrips } from "../../redux/trips/selectors";
 import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal.jsx";
 import AddTripModal from "../../components/Modal/AddTripModal/AddTripModal.jsx";
-import { postTrip, deleteTrip } from "../../redux/trips/operations";
 
 export default function TripsPage() {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoading);
-
-  useEffect(() => {
-    dispatch(getTrips());
-  }, [dispatch]);
-
   const trips = useSelector(selectAllTrips);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [tripToDelete, setTripToDelete] = useState(null);
 
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingTrip, setEditingTrip] = useState(null);
+
+  useEffect(() => {
+    dispatch(getTrips());
+  }, [dispatch]);
 
   return (
     <>
@@ -36,11 +34,7 @@ export default function TripsPage() {
         </div>
 
         <div className={css.filters}>
-          <input
-            type="text"
-            placeholder="Пошук за назвою рейса"
-            className={css.search}
-          />
+          <input type="text" placeholder="Пошук за назвою рейса" className={css.search} />
           <button className={css.filter}>Виїзд - Заїзд</button>
           <button className={css.searchButton}>
             Пошук <FaSearch className={css.searchIcon} />
@@ -57,6 +51,9 @@ export default function TripsPage() {
               onDeleteClick={() => {
                 setTripToDelete(trip);
                 setShowDeleteModal(true);
+              }}
+              onEditClick={() => {
+                setEditingTrip(trip);
               }}
             />
           ))}
@@ -80,6 +77,17 @@ export default function TripsPage() {
           onSubmit={(formData) => {
             dispatch(postTrip(formData));
             setShowAddModal(false);
+          }}
+        />
+      )}
+
+      {editingTrip && (
+        <AddTripModal
+          initialData={editingTrip}
+          onCancel={() => setEditingTrip(null)}
+          onSubmit={(formData) => {
+            dispatch(putTrip({ ...formData, _id: editingTrip._id }));
+            setEditingTrip(null);
           }}
         />
       )}

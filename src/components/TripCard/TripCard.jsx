@@ -1,7 +1,7 @@
 import css from "./TripCard.module.css";
 import { FaTrash, FaPen } from "react-icons/fa";
 
-export default function TripCard({ trip, onDeleteClick }) {
+export default function TripCard({ trip, onDeleteClick, onEditClick }) {
   return (
     <div className={css.card}>
       <div className={css.content}>
@@ -15,9 +15,7 @@ export default function TripCard({ trip, onDeleteClick }) {
         </div>
         <div className={css.cell}>
           <p className={css.label}>Спідометр</p>
-          <p>
-            {trip.startTrip} – {trip.endTrip}
-          </p>
+          <p>{trip.startTrip} – {trip.endTrip}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Пробіг</p>
@@ -36,7 +34,7 @@ export default function TripCard({ trip, onDeleteClick }) {
         <button className={css.delete} onClick={onDeleteClick}>
           <FaTrash /> Видалити
         </button>
-        <button className={css.edit}>
+        <button className={css.edit} onClick={onEditClick}>
           <FaPen /> Редагувати
         </button>
       </div>

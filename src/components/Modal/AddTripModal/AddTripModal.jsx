@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import css from "./AddTripModal.module.css";
 
-export default function AddTripModal({ onCancel, onSubmit }) {
-  const [formData, setFormData] = useState({
-    date: "",
-    truckTrip: "",
-    startTrip: "",
-    endTrip: "",
-    lengthTrip: "",
-    weigth: "",
-    product: "",
-  });
+export default function AddTripModal({ onCancel, onSubmit, initialData = null }) {
+  const [formData, setFormData] = useState(
+    initialData || {
+      date: "",
+      truckTrip: "",
+      startTrip: "",
+      endTrip: "",
+      lengthTrip: "",
+      weigth: "",
+      product: "",
+    }
+  );
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -32,7 +34,7 @@ export default function AddTripModal({ onCancel, onSubmit }) {
   return (
     <div className={css.overlay} onClick={onCancel}>
       <div className={css.modal} onClick={(e) => e.stopPropagation()}>
-        <h2 className={css.title}>Новий рейс</h2>
+        <h2 className={css.title}>{initialData ? "Редагувати рейс" : "Новий рейс"}</h2>
         <div className={css.grid}>
           <label>
             Дата
