@@ -1,21 +1,21 @@
-import { FaSearch } from "react-icons/fa"; // додаємо іконку
+import { FaSearch } from "react-icons/fa";
+import { useEffect } from "react";
 import css from "./TripsPage.module.css";
 import TripCard from "../../components/TripCard/TripCard.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { getTrips } from "../../redux/trips/operations";
+import { selectLoading } from "../../redux/trips/selectors";
+import { selectAllTrips } from "../../redux/trips/selectors.js";
 
 export default function TripsPage() {
-  const trips = [
-    {
-      id: 1,
-      date: "31.03",
-      from: "Драбів",
-      to: "Черкаси",
-      start: 1929318,
-      end: 1928997,
-      distance: 679,
-      weight: 3.88,
-      cargo: "Кукурудза",
-    },
-  ];
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectLoading);
+
+  useEffect(() => {
+    dispatch(getTrips());
+  }, [dispatch]);
+
+  const trips = useSelector(selectAllTrips);
 
   return (
     <div className={css.container}>
@@ -36,9 +36,11 @@ export default function TripsPage() {
         </button>
       </div>
 
+      <div>{isLoading && "Request in progress..."}</div>
+
       <div className={css.list}>
         {trips.map((trip) => (
-          <TripCard key={trip.id} trip={trip} />
+          <TripCard key={trip._id} trip={trip} />
         ))}
       </div>
     </div>

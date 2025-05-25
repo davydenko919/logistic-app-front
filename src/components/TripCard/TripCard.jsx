@@ -7,27 +7,27 @@ export default function TripCard({ trip }) {
       <div className={css.content}>
         <div className={css.cell}>
           <p className={css.label}>Дата</p>
-          <p>{trip.date}</p>
+          <p>{trip.date.slice(0, 10)}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Маршрут</p>
-          <p>{trip.from} – {trip.to}</p>
+          <p>{trip.truckTrip}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Спідометр</p>
-          <p>{trip.start} – {trip.end}</p>
+          <p>{trip.startTrip} – {trip.endTrip}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Пробіг</p>
-          <p>{trip.distance}</p>
+          <p>{trip.lengthTrip}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Вага, т</p>
-          <p>{trip.weight}</p>
+          <p>{trip.weigth}</p>
         </div>
         <div className={css.cell}>
           <p className={css.label}>Вид товару</p>
-          <p>{trip.cargo}</p>
+          <p>{trip.product}</p>
         </div>
       </div>
       <div className={css.actions}>
