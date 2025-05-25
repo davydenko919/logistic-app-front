@@ -5,6 +5,10 @@
 
 .mainContent {
   flex: 1;
-  padding: 24px;
+  /* padding: 24px; */
   box-sizing: border-box;
+}
+
+.mainContentUser{
+  padding: 24px;
 }

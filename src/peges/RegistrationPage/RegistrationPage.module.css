@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #004BBA;
+  padding: 20px;
+}
+
+.card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.logo {
+  color: #004BBA;
+}
+
+.subtext {
+  font-size: 14px;
+  margin-bottom: 24px;
+  color: #555;
+}
+
+.googleBtn {
+  background: #f1f1f1;
+  padding: 12px;
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.divider {
+  text-align: center;
+  margin: 16px 0;
+  color: #888;
+  font-size: 12px;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.submit {
+  background: #004BBA;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  font-size: 15px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.footer {
+  font-size: 13px;
+  text-align: center;
+  color: #444;
+}
+
+.footer a {
+  color: #004BBA;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.imagePlaceholder {
+  flex: 1;
+  background-color: #ddd;
+  border-left: 1px solid #eee;
+}
