@@ -1,11 +1,14 @@
 import { FaSearch } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import css from "./TripsPage.module.css";
 import TripCard from "../../components/TripCard/TripCard.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrips } from "../../redux/trips/operations";
 import { selectLoading } from "../../redux/trips/selectors";
 import { selectAllTrips } from "../../redux/trips/selectors.js";
+import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal.jsx";
+import AddTripModal from "../../components/Modal/AddTripModal/AddTripModal.jsx";
+import { postTrip, deleteTrip } from "../../redux/trips/operations";
 
 export default function TripsPage() {
   const dispatch = useDispatch();
@@ -17,32 +20,69 @@ export default function TripsPage() {
 
   const trips = useSelector(selectAllTrips);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [tripToDelete, setTripToDelete] = useState(null);
+
+  const [showAddModal, setShowAddModal] = useState(false);
+
   return (
-    <div className={css.container}>
-      <div className={css.header}>
-        <h1 className={css.title}>Лист рейсів</h1>
-        <button className={css.addTrip}>+ Додати рейс</button>
+    <>
+      <div className={css.container}>
+        <div className={css.header}>
+          <h1 className={css.title}>Лист рейсів</h1>
+          <button className={css.addTrip} onClick={() => setShowAddModal(true)}>
+            + Додати рейс
+          </button>
+        </div>
+
+        <div className={css.filters}>
+          <input
+            type="text"
+            placeholder="Пошук за назвою рейса"
+            className={css.search}
+          />
+          <button className={css.filter}>Виїзд - Заїзд</button>
+          <button className={css.searchButton}>
+            Пошук <FaSearch className={css.searchIcon} />
+          </button>
+        </div>
+
+        <div>{isLoading && "Request in progress..."}</div>
+
+        <div className={css.list}>
+          {trips.map((trip) => (
+            <TripCard
+              key={trip._id}
+              trip={trip}
+              onDeleteClick={() => {
+                setTripToDelete(trip);
+                setShowDeleteModal(true);
+              }}
+            />
+          ))}
+        </div>
       </div>
 
-      <div className={css.filters}>
-        <input
-          type="text"
-          placeholder="Пошук за назвою рейса"
-          className={css.search}
+      {showDeleteModal && (
+        <DeleteModal
+          trip={tripToDelete}
+          onCancel={() => setShowDeleteModal(false)}
+          onConfirm={() => {
+            dispatch(deleteTrip(tripToDelete._id));
+            setShowDeleteModal(false);
+          }}
         />
-        <button className={css.filter}>Виїзд - Заїзд</button>
-        <button className={css.searchButton}>
-          Пошук <FaSearch className={css.searchIcon} />
-        </button>
-      </div>
+      )}
 
-      <div>{isLoading && "Request in progress..."}</div>
-
-      <div className={css.list}>
-        {trips.map((trip) => (
-          <TripCard key={trip._id} trip={trip} />
-        ))}
-      </div>
-    </div>
+      {showAddModal && (
+        <AddTripModal
+          onCancel={() => setShowAddModal(false)}
+          onSubmit={(formData) => {
+            dispatch(postTrip(formData));
+            setShowAddModal(false);
+          }}
+        />
+      )}
+    </>
   );
 }
