@@ -7,8 +7,16 @@ import {
   FaChartPie,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/selectors";
+import { logOut } from "../../redux/auth/operations";
 
 const Navigation = () => {
+
+  const dispatch = useDispatch()
+  const handleLogout = () => {dispatch(logOut())}
+
+  const { name, email } = useSelector(selectUser);
   return (
     <nav className={css.sidebar}>
       <NavLink
@@ -46,14 +54,14 @@ const Navigation = () => {
         </li>
       </ul>
       <div className={css.footer}>
-        <button className={css.logout}>
+        <button className={css.logout} onClick={handleLogout}>
           <FaSignOutAlt className={css.icon} /> Вийти
         </button>
         <NavLink to="/profile" className={css.profileLink}>
-          <div className={css.avatar} />
+          <div className={css.avatar}>{name?.charAt(0)}</div>
           <div className={css.profileText}>
-            <p className={css.userName}>Anton Poteliakhin</p>
-            <p className={css.email}>potelyakhin816@gmail.com</p>
+            <p className={css.userName}>{name}</p>
+            <p className={css.email}>{email}</p>
           </div>
         </NavLink>
       </div>

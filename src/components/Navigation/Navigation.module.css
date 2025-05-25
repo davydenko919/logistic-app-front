@@ -127,6 +127,12 @@
   border-radius: 50%;
   background-color: #ddd;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #333;
+  font-size: 20px;
 }
 
 .profileText {

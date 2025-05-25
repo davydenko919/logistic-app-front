@@ -1,6 +1,7 @@
 import { Formik, Form, Field } from "formik";
 import { Link } from "react-router-dom";
 import css from "./LoginPage.module.css";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/auth/operations";
 
@@ -9,7 +10,15 @@ export default function LoginPage() {
   
 
   const handleSubmit = (values, actions) => {
-    dispatch(logIn(values));
+    dispatch(logIn(values)).unwrap()
+      .then(reponse => {
+        console.log(reponse);
+        toast.success("Success!!!");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+;
     actions.resetForm();
   };
   return (

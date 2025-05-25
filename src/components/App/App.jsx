@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
 import css from "./App.module.css";
-
+import { Toaster } from "react-hot-toast";
 import Navigation from "../Navigation/Navigation";
 
 const HomePage = lazy(() => import("../../peges/HomePage/HomePage"));
@@ -13,13 +13,14 @@ const TripsPage = lazy(() => import("../../peges/TripsPage/TripsPage"));
 const RefuelingPage = lazy(() => import("../../peges/RefuelingPage/RefuelingPage"));
 const AnalyticsPage = lazy(() => import("../../peges/AnalyticsPage/AnalyticsPage"));
 const ProfilePage = lazy(() => import("../../peges/ProfilePage/ProfilePage"));
-const NotFoundPage = lazy(() => import("../../peges/NotFoundPage/NotFoundPage"));
+// const NotFoundPage = lazy(() => import("../../peges/NotFoundPage/NotFoundPage"));
 
 export default function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (
     <div className={css.appContainer}>
+      <Toaster position="top-right" reverseOrder={false} />
       {isLoggedIn && <Navigation />}
 
       <main className={css.mainContent}>
@@ -38,7 +39,8 @@ export default function App() {
                 <Route path="/refueling" element={<RefuelingPage />} />
                 <Route path="/analytics" element={<AnalyticsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="*" element={<NotFoundPage />} />
+                {/* <Route path="*" element={<NotFoundPage />} /> */}
+                <Route path="*" element={<HomePage />} />
               </>
             )}
           </Routes>
