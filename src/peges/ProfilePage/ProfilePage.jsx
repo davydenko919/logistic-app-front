@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import css from "./ProfilePage.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, updateUser } from "../../redux/users/operations";
-import { selectAuthUser } from "../../redux/auth/selectors";
-import { useParams } from "react-router-dom";
+import { getUser } from "../../redux/users/operations";
+import { selectUser } from "../../redux/auth/selectors";
+import { FiEdit2 } from "react-icons/fi";
 
 export default function ProfilePage() {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const authUser = useSelector(selectAuthUser);
+  const authUser = useSelector(selectUser);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,58 +16,39 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    if (id) {
-      dispatch(getUser(id)).then((res) => {
+    if (authUser?._id) {
+      dispatch(getUser(authUser._id)).then((res) => {
         if (res.payload) {
           const { name, email, car } = res.payload.data;
           setFormData({ name, email, car });
         }
       });
     }
-  }, [dispatch, id]);
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateUser({ id, updatedData: formData }));
-  };
+  }, [dispatch, authUser]);
 
   return (
-    <div className={css.container}>
-      <h1 className={css.title}>Профіль користувача</h1>
-      <form className={css.form} onSubmit={handleSubmit}>
-        <label>
-          Ім'я:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Авто:
-          <input
-            type="text"
-            name="car"
-            value={formData.car}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit" className={css.submit}>Оновити</button>
-      </form>
+    <div className={css.page}>
+      <div className={css.card}>
+        <div className={css.header}>
+          <h1 className={css.title}>Профіль</h1>
+          <FiEdit2 size={20} className={css.editIcon} />
+        </div>
+
+        <div className={css.field}>
+          <label className={css.label}>Ім’я</label>
+          <input className={css.input} type="text" value={formData.name} disabled />
+        </div>
+
+        <div className={css.field}>
+          <label className={css.label}>Пошта</label>
+          <input className={css.input} type="text" value={formData.email} disabled />
+        </div>
+
+        <div className={css.field}>
+          <label className={css.label}>Машина</label>
+          <input className={css.input} type="text" value={formData.car} disabled />
+        </div>
+      </div>
     </div>
   );
 }
