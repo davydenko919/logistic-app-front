@@ -5,7 +5,7 @@ import {
 import { logOut } from "../auth/operations";
 
 const carsSlice = createSlice({
-  name: "users",
+  name: "cars",
   initialState: {
     items: [],
     isLoading: false,
