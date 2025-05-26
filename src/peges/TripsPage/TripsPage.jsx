@@ -14,7 +14,7 @@ import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal.jsx";
 import AddTripModal from "../../components/Modal/AddTripModal/AddTripModal.jsx";
 
 function formatDate(date) {
-  return date.toISOString().split("T")[0]; // yyyy-mm-dd
+  return date.toISOString().split("T")[0];
 }
 
 export default function TripsPage() {
@@ -31,13 +31,11 @@ export default function TripsPage() {
   const thirtyOneDaysAgo = new Date();
   thirtyOneDaysAgo.setDate(today.getDate() - 31);
 
-  // Filters
   const [startDate, setStartDate] = useState(formatDate(thirtyOneDaysAgo));
   const [endDate, setEndDate] = useState(formatDate(today));
   const [sortOrder, setSortOrder] = useState("asc");
   const [truckTrip, setTruckTrip] = useState("");
 
-  // Pagination
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -60,14 +58,13 @@ export default function TripsPage() {
     ).then((res) => {
       const payload = res.payload;
       if (payload?.totalItems) {
-        const total = Math.ceil(payload.totalItems / perPage);
-        setTotalPages(total);
+        setTotalPages(Math.ceil(payload.totalItems / perPage));
       }
     });
   };
 
   const handleFilter = () => {
-    setPage(1); // Reset to page 1
+    setPage(1);
     fetchTrips();
   };
 
@@ -126,7 +123,7 @@ export default function TripsPage() {
           </button>
         </div>
 
-        <div>{isLoading && "Request in progress..."}</div>
+        {isLoading && <div>Завантаження...</div>}
 
         <div className={css.list}>
           {trips.map((trip) => (
@@ -139,6 +136,7 @@ export default function TripsPage() {
               }}
               onEditClick={() => {
                 setEditingTrip(trip);
+                setShowAddModal(true);
               }}
             />
           ))}
@@ -152,9 +150,7 @@ export default function TripsPage() {
           >
             ← Назад
           </button>
-          <span>
-            Сторінка {page} з {totalPages}
-          </span>
+          <span>Сторінка {page} з {totalPages}</span>
           <button
             disabled={page >= totalPages}
             onClick={() => setPage((prev) => prev + 1)}
@@ -162,7 +158,6 @@ export default function TripsPage() {
           >
             Вперед →
           </button>
-
           <select
             value={perPage}
             onChange={(e) => setPerPage(Number(e.target.value))}
@@ -182,7 +177,7 @@ export default function TripsPage() {
           trip={tripToDelete}
           onCancel={() => setShowDeleteModal(false)}
           onConfirm={() => {
-            dispatch(deleteTrip(tripToDelete._id));
+            dispatch(deleteTrip(tripToDelete._id)).then(fetchTrips);
             setShowDeleteModal(false);
           }}
         />
@@ -190,20 +185,18 @@ export default function TripsPage() {
 
       {showAddModal && (
         <AddTripModal
-          onCancel={() => setShowAddModal(false)}
-          onSubmit={(formData) => {
-            dispatch(postTrip(formData));
-            setShowAddModal(false);
-          }}
-        />
-      )}
-
-      {editingTrip && (
-        <AddTripModal
           initialData={editingTrip}
-          onCancel={() => setEditingTrip(null)}
+          onCancel={() => {
+            setShowAddModal(false);
+            setEditingTrip(null);
+          }}
           onSubmit={(formData) => {
-            dispatch(putTrip({ ...formData, _id: editingTrip._id }));
+            if (editingTrip) {
+              dispatch(putTrip({ id: editingTrip._id, updatedData: formData })).then(fetchTrips);
+            } else {
+              dispatch(postTrip(formData)).then(fetchTrips);
+            }
+            setShowAddModal(false);
             setEditingTrip(null);
           }}
         />

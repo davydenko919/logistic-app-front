@@ -27,7 +27,7 @@ export default function AddTripModal({ onCancel, onSubmit, initialData = null })
   };
 
   const handleSubmit = () => {
-    onSubmit(formData);
+    onSubmit({ ...formData, _id: initialData?._id });
     onCancel();
   };
 
