@@ -1,0 +1,32 @@
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pageButton {
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: white;
+  border: 1px solid #004bba;
+  color: #004bba;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.perPageSelect {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #d0d7de;
+  background-color: white;
+}

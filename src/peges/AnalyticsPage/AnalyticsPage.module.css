@@ -16,42 +16,36 @@
   box-sizing: border-box;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  gap: 16px;
-}
-
 .title {
   font-size: 24px;
   font-weight: 600;
   color: var(--text);
+  margin-bottom: 24px;
 }
 
-.addTrip {
-  padding: 10px 16px;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-size: var(--font-size);
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+/* ============ ФІЛЬТРИ + МЕТРИКИ ============ */
+.filtersRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 24px;
 }
 
-.addTrip:hover {
-  background-color: var(--primary-hover);
-}
-
-.filters {
+.filtersLeft {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.filtersRight {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .filterGroup {
@@ -81,28 +75,12 @@
 }
 
 .textInput {
-  width: 180px;
+  width: 160px;
 }
 
 .dateInput {
   width: 120px;
   text-align: center;
-  cursor: pointer;
-}
-
-.sortWrapper {
-  height: var(--height);
-  display: flex;
-  align-items: center;
-}
-
-.sortSelect {
-  height: var(--height);
-  padding: 0 12px;
-  font-size: var(--font-size);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background-color: white;
   cursor: pointer;
 }
 
@@ -131,46 +109,29 @@
   transform: translateY(1px);
 }
 
+/* ============ МЕТРИКИ ============ */
+
+.metricTitle {
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.metricValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ============ Список рейсів ============ */
+
 .list {
   flex: 1;
   overflow-y: auto;
-  padding-right: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-right: 8px;
   box-sizing: border-box;
-}
-
-/* Пагінація */
-.pagination {
-  margin-top: 24px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.pageButton {
-  padding: 8px 12px;
-  font-size: 14px;
-  background-color: white;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pageButton:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.perPageSelect {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background-color: white;
 }
