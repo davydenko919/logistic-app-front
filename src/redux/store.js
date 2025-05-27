@@ -4,6 +4,7 @@ import tripsReducer from "./trips/slice.js";
 import adminTripsSlice from "./admintrips/slice.js";
 import usersSlice from "./users/slice.js";
 import carsSlice from "./cars/slice.js";
+import refuelingsReducer from "./refuelings/slice.js";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     admintrips: adminTripsSlice,
     users: usersSlice,
     cars: carsSlice,
+    refuelings: refuelingsReducer,
   }
 });
