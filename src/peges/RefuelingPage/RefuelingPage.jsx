@@ -1,138 +1,209 @@
+import { FaSearch, FaCalendarAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import css from "./RefuelingsPage.module.css";
+import RefuelingCard from "../../components/RefuelingCard/RefuelingCard";
+import Pagination from "../../components/Pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getRefuelings,
   deleteRefueling,
   postRefueling,
+  putRefueling,
 } from "../../redux/refuelings/operations";
-import {
-  selectAllRefuelings,
-  selectLoading,
-} from "../../redux/refuelings/selectors";
-import css from "./RefuelingsPage.module.css";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal.jsx";
+import AddRefuelingModal from "../../components/Modal/AddRefuelingModal/AddRefuelingModal.jsx";
+import { selectAllRefuelings, selectLoading } from "../../redux/refuelings/selectors";
+import { getUsers } from "../../redux/users/operations";
+import { selectUsers } from "../../redux/users/selectors";
+
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
+}
 
 export default function RefuelingsPage() {
   const dispatch = useDispatch();
   const refuelings = useSelector(selectAllRefuelings);
   const isLoading = useSelector(selectLoading);
+  const users = useSelector(selectUsers);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    date: "",
-    truck: "",
-    place: "",
-    gasStation: "",
-    amount: "",
-  });
+  const today = new Date();
+  const aMonthAgo = new Date();
+  aMonthAgo.setDate(today.getDate() - 30);
+
+  const [startDate, setStartDate] = useState(formatDate(aMonthAgo));
+  const [endDate, setEndDate] = useState(formatDate(today));
+  const [truck, setTruck] = useState("");
+  const [driverId, setDriverId] = useState("");
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [refuelingToDelete, setRefuelingToDelete] = useState(null);
+  const [editingRefueling, setEditingRefueling] = useState(null);
+
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchRefuelings = () => {
+    dispatch(
+      getRefuelings({
+        startDate,
+        endDate,
+        truck: truck || undefined,
+        driverId: driverId || undefined,
+        page,
+        perPage,
+        sortBy: "date",
+        sortOrder: "desc",
+      })
+    ).then((res) => {
+      const payload = res.payload;
+      // const items = payload.refuelings || payload || [];
+
+      if (payload.totalItems && perPage) {
+        setTotalPages(Math.ceil(payload.totalItems / perPage));
+      } else {
+        setTotalPages(1);
+      }
+    });
+  };
 
   useEffect(() => {
-    dispatch(getRefuelings({ page: 1, perPage: 20 }));
+    fetchRefuelings();
+  }, [page, perPage]);
+
+  useEffect(() => {
+    dispatch(getUsers());
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    if (window.confirm("Ви впевнені, що хочете видалити заправку?")) {
-      dispatch(deleteRefueling(id));
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(postRefueling(formData));
-    setIsModalOpen(false);
-    setFormData({ date: "", truck: "", place: "", gasStation: "", amount: "" });
+  const handleFilter = () => {
+    setPage(1);
+    fetchRefuelings();
   };
 
   return (
     <div className={css.container}>
-      <div className={css.header}>
-        <h1 className={css.title}>Лист заправок</h1>
-        <div className={css.controls}>
-          <input className={css.search} placeholder="Пошук за назвою заправки" />
-          <button className={css.filter}>Період заправки</button>
-          <button className={css.addButton} onClick={() => setIsModalOpen(true)}>
+      <h1 className={css.title}>Список заправок</h1>
+
+      <div className={css.filtersRow}>
+        <div className={css.filtersLeft}>
+          <div className={css.filterGroup}>
+            <FaSearch className={css.icon} />
+            <input
+              type="text"
+              placeholder="Машина"
+              value={truck}
+              onChange={(e) => setTruck(e.target.value)}
+              className={`${css.input} ${css.textInput}`}
+            />
+          </div>
+
+          <div className={css.filterGroup}>
+            <FaCalendarAlt className={css.icon} />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className={`${css.input} ${css.dateInput}`}
+            />
+            <span>–</span>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className={`${css.input} ${css.dateInput}`}
+            />
+          </div>
+
+          <div className={css.filterGroup}>
+            <select
+              value={driverId}
+              onChange={(e) => setDriverId(e.target.value)}
+              className={`${css.input} ${css.textInput}`}
+            >
+              <option value="">Усі водії</option>
+              {users.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button className={css.searchButton} onClick={handleFilter}>
+            Пошук <FaSearch className={css.searchIcon} />
+          </button>
+        </div>
+
+        <div className={css.filtersRight}>
+          <button
+            className={css.addButton}
+            onClick={() => setShowAddModal(true)}
+          >
             + Додати заправку
           </button>
         </div>
       </div>
 
-      {isLoading && <p>Завантаження...</p>}
-
       <div className={css.list}>
-        {refuelings.map((item) => (
-          <div key={item._id} className={css.card}>
-            <p>{new Date(item.date).toLocaleDateString()}</p>
-            <p>Місце: {item.place}</p>
-            <p>Кількість, л: {item.amount}</p>
-            <div className={css.actions}>
-              <button onClick={() => handleDelete(item._id)}>
-                <FaTrash /> Видалити
-              </button>
-              <button>
-                <FaEdit /> Редагувати
-              </button>
-            </div>
-          </div>
+        {isLoading && <p>Завантаження...</p>}
+        {refuelings.map((refuel) => (
+          <RefuelingCard
+            key={refuel._id}
+            refueling={refuel}
+            onDeleteClick={() => {
+              setRefuelingToDelete(refuel);
+              setShowDeleteModal(true);
+            }}
+            onEditClick={() => {
+              setEditingRefueling(refuel);
+              setShowAddModal(true);
+            }}
+          />
         ))}
       </div>
 
-      {isModalOpen && (
-        <div className={css.overlay}>
-          <div className={css.modal}>
-            <h2>Додати заправку</h2>
-            <form className={css.form} onSubmit={handleSubmit}>
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="text"
-                name="truck"
-                value={formData.truck}
-                placeholder="Номер машини"
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="text"
-                name="place"
-                value={formData.place}
-                placeholder="Місце"
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="text"
-                name="gasStation"
-                value={formData.gasStation}
-                placeholder="АЗС"
-                onChange={handleChange}
-              />
-              <input
-                type="number"
-                name="amount"
-                value={formData.amount}
-                placeholder="Кількість (л)"
-                onChange={handleChange}
-                required
-              />
-              <div className={css.modalActions}>
-                <button type="submit">Зберегти</button>
-                <button type="button" onClick={() => setIsModalOpen(false)}>
-                  Скасувати
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        perPage={perPage}
+        onPageChange={setPage}
+        onPerPageChange={(val) => {
+          setPerPage(val);
+          setPage(1);
+        }}
+      />
+
+      {showDeleteModal && (
+        <DeleteModal
+          trip={refuelingToDelete}
+          onCancel={() => setShowDeleteModal(false)}
+          onConfirm={() => {
+            dispatch(deleteRefueling(refuelingToDelete._id)).then(fetchRefuelings);
+            setShowDeleteModal(false);
+          }}
+        />
+      )}
+
+      {showAddModal && (
+        <AddRefuelingModal
+          initialData={editingRefueling}
+          onCancel={() => {
+            setShowAddModal(false);
+            setEditingRefueling(null);
+          }}
+          onSubmit={(formData) => {
+            if (editingRefueling) {
+              dispatch(
+                putRefueling({ id: editingRefueling._id, data: formData })
+              ).then(fetchRefuelings);
+            } else {
+              dispatch(postRefueling(formData)).then(fetchRefuelings);
+            }
+            setShowAddModal(false);
+            setEditingRefueling(null);
+          }}
+        />
       )}
     </div>
   );
