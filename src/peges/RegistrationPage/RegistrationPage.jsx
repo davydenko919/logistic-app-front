@@ -6,7 +6,6 @@ import { register } from "../../redux/auth/operations";
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
-  
 
   const handleSubmit = (values, actions) => {
     dispatch(register(values));
@@ -24,10 +23,17 @@ export default function RegistrationPage() {
             <h2 className={css.title}>
               Створіть акаунт у <span className={css.logo}>Logistics</span>
             </h2>
-            <p className={css.subtext}>Будь ласка, заповніть всі поля для реєстрації</p>
+            <p className={css.subtext}>
+              Будь ласка, заповніть всі поля для реєстрації
+            </p>
 
             <button type="button" className={css.googleBtn}>
-              <img src="/google-icon.svg" alt="G" /> Зареєструватись через Gmail
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/640px-Gmail_icon_%282020%29.svg.png"
+                alt="Gmail"
+                width="20"
+                height="16"
+              /> Зареєструватись через Gmail
             </button>
 
             <div className={css.divider}>або</div>
@@ -64,7 +70,13 @@ export default function RegistrationPage() {
           </Form>
         </Formik>
 
-        <div className={css.imagePlaceholder}></div>
+        <div className={css.imagePlaceholder}>
+          <img
+            src="https://www.hughbaird.ac.uk/user/pages/94.blog/49.5-tips-for-building-a-successful-career-in-logistics/logistics.jpg"
+            alt="Login Illustration"
+            className={css.image}
+          />
+        </div>
       </div>
     </div>
   );

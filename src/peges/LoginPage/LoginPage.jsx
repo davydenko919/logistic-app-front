@@ -7,18 +7,17 @@ import { logIn } from "../../redux/auth/operations";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
-  
 
   const handleSubmit = (values, actions) => {
-    dispatch(logIn(values)).unwrap()
-      .then(reponse => {
+    dispatch(logIn(values))
+      .unwrap()
+      .then((reponse) => {
         console.log(reponse);
         toast.success("Success!!!");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-;
     actions.resetForm();
   };
   return (
@@ -35,7 +34,13 @@ export default function LoginPage() {
             <p className={css.subtext}>Будь ласка, введіть свої дані</p>
 
             <button type="button" className={css.googleBtn}>
-              <img src="/google-icon.svg" alt="G" /> Увійти за допомогою Gmail
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/640px-Gmail_icon_%282020%29.svg.png"
+                alt="Gmail"
+                width="20"
+                height="16"
+              />{" "}
+              Увійти за допомогою Gmail
             </button>
 
             <div className={css.divider}>або</div>
@@ -67,7 +72,13 @@ export default function LoginPage() {
           </Form>
         </Formik>
 
-        <div className={css.imagePlaceholder}></div>
+        <div className={css.imagePlaceholder}>
+          <img
+            src="https://www.hughbaird.ac.uk/user/pages/94.blog/49.5-tips-for-building-a-successful-career-in-logistics/logistics.jpg"
+            alt="Login Illustration"
+            className={css.image}
+          />
+        </div>
       </div>
     </div>
   );
